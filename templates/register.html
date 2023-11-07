@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+<title>{%block title%}Register Page{%endblock%}</title>
+{%block styles%}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: url("https://th.bing.com/th/id/R.a0732f8b3693f76363d6e5307ec43996?rik=HNeTZIEimgU65Q&riu=http%3a%2f%2fwww.pixelstalk.net%2fwp-content%2fuploads%2f2016%2f10%2fAmazing-Binary-Code-Background.jpg&ehk=3nz3RrRQmrQ7sMFbk9Sd3s%2bnAwFRJD9jcdULveMzcDA%3d&risl=&pid=ImgRaw&r=0"); /* Set your background image here */
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+    margin-top: 200px;
+    padding: 20px;
+    background: rgba(203, 190, 190, 0.8);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+
+  select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+
+  input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    margin-left: 180px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  input[type="submit"]:hover {
+    background-color: rgb(127, 185, 243);
+    transition-duration: 0.35s;
+    padding: 15px 20px;
+  }
+</style>
+{%endblock%} {%block content%}
+<body>
+  <div class="container">
+    <h2>Register</h2>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ form.first_name.id_for_label }}">First Name:</label>
+        {{ form.first_name }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.last_name.id_for_label }}">Last Name:</label>
+        {{ form.last_name }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.username.id_for_label }}">Username:</label>
+        {{ form.username }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.password1.id_for_label }}">Password:</label>
+        {{ form.password1 }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
+        {{ form.password2 }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.gender.id_for_label }}">Gender:</label>
+        {{ form.gender }}
+      </div>
+      <div class="form-group">
+        <input type="submit" value="Register" />
+      </div>
+    </form>
+  </div>
+</body>
+{%endblock%}

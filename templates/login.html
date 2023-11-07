@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+<title>{%block title%}Login Page {%endblock%}</title>
+{%block styles%}
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: url("https://th.bing.com/th/id/R.a0732f8b3693f76363d6e5307ec43996?rik=HNeTZIEimgU65Q&riu=http%3a%2f%2fwww.pixelstalk.net%2fwp-content%2fuploads%2f2016%2f10%2fAmazing-Binary-Code-Background.jpg&ehk=3nz3RrRQmrQ7sMFbk9Sd3s%2bnAwFRJD9jcdULveMzcDA%3d&risl=&pid=ImgRaw&r=0"); /* Set your background image here */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+  }
+
+  .label {
+    font-weight: 300;
+    font-size: large;
+  }
+
+  .login-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(
+      203,
+      190,
+      190,
+      0.8
+    ); /* Background color with transparency */
+    text-align: center;
+    padding: 60px;
+    border-radius: 10px;
+  }
+  .login-heading {
+    text-align: center;
+    font-size: xx-large;
+    font-weight: 1000;
+    font-family: "Courier New", Courier, monospace;
+    color: #333;
+  }
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-bottom: 1px solid #333;
+    outline: none;
+  }
+
+  input[type="submit"] {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+</style>
+{%endblock%} {%block content%} {% if not user.is_authenticated %}
+
+    <body>
+      
+      <div class="login-container">
+        <h1 class="login-heading">Login form</h1>
+        <hr />
+
+        <br />
+        <form action="{% url 'login' %}" method="post">
+          {%csrf_token%}
+          <label class="label" for="Username">Username:</label>
+          <input
+            type="text"
+            id="Username"
+            name="username"
+            placeholder="Enter your username..."
+            required
+          />
+          <label class="label" for="Username">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password..."
+            required
+          />
+          <input type="submit" value="Login" />
+        </form>
+      </div>
+    </body>
+    {%else%}
+    <div class="login-container">
+      <h1>
+        You are already logged in. <br />
+        <a href="{% url 'chatbot' %}">Go to chatbot</a>
+      </h1>
+    </div>
+    {%endif%} {%endblock%}
+  </div>
+</div>

@@ -1,0 +1,587 @@
+{% extends 'base.html' %} {% block styles %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+/>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script
+  src="https://kit.fontawesome.com/f076b59054.js"
+  crossorigin="anonymous"
+></script>
+<style>
+  body,
+  html {
+    height: 100%;
+  }
+
+  .messages-box {
+    width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .messages-list {
+    padding-left: 0;
+  }
+
+  .message {
+    margin-bottom: 15px;
+    list-style: none;
+  }
+
+  .message-text {
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .sent {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+  }
+
+  .received {
+    background-color: #f1f0f0;
+    align-self: flex-start;
+  }
+
+  .message-form {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    z-index: 1;
+    background-color: #f8f9fa;
+  }
+
+  .message-input {
+    flex: 1;
+    border-radius: 0;
+    border-right: none;
+  }
+
+  .btn-send {
+    border-radius: 0;
+  }
+
+  .chat-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .delete-button {
+    margin-top: 20px;
+    max-width: 150px;
+    position: inherit;
+    margin-left: 91%;
+    border-radius: 10px;
+    background-color: red;
+    padding: 15px 20px;
+    color: white;
+  }
+
+  .delete-button:hover {
+    background-color: rgb(247, 126, 121);
+    transition: 0.5s;
+  }
+
+  .top-arrow {
+    display: none;
+    position: absolute;
+    max-width: 40px;
+    margin-bottom: 20px;
+    margin-right: 100px;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+  }
+
+  /* styling for unauthenticated users */
+  body1 {
+    background: url("https://www.hdwallpapers.in/download/white_wallpaper_25_4k_5k_hd_white-2560x1440.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 95vh;
+  }
+  .login-card {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    padding: 20px;
+    margin: 20px auto;
+    width: 650px;
+    max-height: 350px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .login-info h1 {
+    color: #333;
+    font-size: 24px;
+  }
+
+  .login-info p {
+    color: #555;
+    font-size: 16px;
+  }
+
+  .login-buttons {
+    margin-top: 20px;
+  }
+
+  .login-button,
+  .register-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .login-button {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  .register-button {
+    background-color: #5bc0de;
+    color: #fff;
+  }
+
+  .faq {
+    margin: 20px auto;
+    width: 800px;
+  }
+
+  .faq h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+  }
+
+  .faq ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .faq-item {
+    color: #555;
+    font-size: 20px;
+    font-weight: 350;
+    padding-top: 10px;
+    border-bottom: 1px solid #7e7575;
+    position: relative;
+    padding: 10px 0;
+    cursor: pointer;
+  }
+
+  .faq-question {
+    font-weight: bold;
+  }
+
+  .faq-answer {
+    display: none;
+    margin-top: 10px;
+  }
+
+  .faq li:last-child .faq-item {
+    border-bottom: none;
+  }
+
+  .faq li:before .faq-item {
+    content: "-";
+    padding-right: 5px;
+  }
+</style>
+{% endblock %}
+<title>{%block title%}Pavle's CHATBOT {%endblock%}</title>
+{% block content %}
+<div class="chat-container">
+  <div class="card flex-grow-1">
+    <div
+      style="text-align: center; font-size: xx-large; font-weight: 400"
+      class="card-header bg-info text-white"
+    >
+      Pavle's Chatbot
+    </div>
+    {% if user.is_authenticated %}
+    <div
+      class="card-header bg-secondary text-white"
+      style="text-align: center; font-size: large"
+    >
+      <b
+        >Welcome to my first chatbot, {{user.first_name}} {{user.last_name}}.</b
+      >
+      <div id="top"></div>
+
+      <a
+        class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+        style="
+          color: rgb(0, 242, 255);
+          position: relative;
+          left: 850px;
+          bottom: 20px;
+          font-size: large;
+        "
+        href="logout"
+        ><button class="btn btn-primary">Logout</button></a
+      >
+    </div>
+
+    {% else %}
+    <body1>
+      <div class="login-card">
+        <div class="login-info">
+          <h1>You need to log in to continue</h1>
+          <div class="login-buttons">
+            <a class="login-button" href="{% url 'login' %}">Login</a>
+            <br /><br />
+          </div>
+          <p>Don't have an account? Register for free!</p>
+        </div>
+        <div class="login-buttons">
+          <a class="register-button" href="{% url 'register' %}">Register</a>
+        </div>
+      </div>
+      <hr />
+      <div class="faq">
+        <h2>Frequently Asked Questions</h2>
+        <ul>
+          <li>
+            <div class="faq-item">
+              <span class="faq-question"
+                >How does the chatbot work?
+                <i class="fa-solid fa-angle-down"></i
+              ></span>
+              <div class="faq-answer">
+                <p>
+                  The chatbot is powered by advanced natural language processing
+                  (NLP) technology. It can understand your messages and provide
+                  relevant responses based on its training data.
+                </p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="faq-item">
+              <span class="faq-question"
+                >What can I do with the chatbot?
+                <i class="fa-solid fa-angle-down"></i
+              ></span>
+              <div class="faq-answer">
+                <p>
+                  The chatbot can assist you in various tasks, such as answering
+                  questions, providing information, and even engaging in casual
+                  conversations. You can ask it about a wide range of topics.
+                </p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="faq-item">
+              <span class="faq-question"
+                >Is the chatbot available 24/7?
+                <i class="fa-solid fa-angle-down"></i
+              ></span>
+              <div class="faq-answer">
+                <p>
+                  Yes, the chatbot is available around the clock. You can
+                  interact with it whenever you like, whether it's day or night.
+                </p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="faq-item">
+              <span class="faq-question"
+                >Can the chatbot access my personal information?
+                <i class="fa-solid fa-angle-down"></i
+              ></span>
+              <div class="faq-answer">
+                <p>
+                  No, the chatbot cannot access or store your personal
+                  information. Your privacy and data security are a top
+                  priority. Only thing that is being saved in our database are
+                  your prompts and chatbot's answers. That is used to train the
+                  chatbot.
+                </p>
+              </div>
+            </div>
+          </li>
+          <li></li>
+          <li>
+            <div class="faq-item">
+              <span class="faq-question"
+                >Is the chatbot constantly learning and improving?
+                <i class="fa-solid fa-angle-down"></i
+              ></span>
+              <div class="faq-answer">
+                <p>
+                  Yes, the chatbot is regularly updated with new knowledge and
+                  training data. It continually learns from user interactions to
+                  enhance its capabilities.
+                </p>
+              </div>
+            </div>
+          </li>
+          <li></li>
+          <li>
+            <div class="faq-item">
+              <span class="faq-question"
+                >Can I integrate the chatbot with other applications or
+                websites? <i class="fa-solid fa-angle-down"></i
+              ></span>
+              <div class="faq-answer">
+                <p>
+                  Yes, our chatbot can be integrated with various platforms,
+                  including websites, mobile apps, and other software.
+                  Integration options are available to help you make the most of
+                  its capabilities.
+                </p>
+              </div>
+            </div>
+          </li>
+          <li></li>
+        </ul>
+      </div>
+    </body1>
+
+    {% endif %} {% if user.is_authenticated %}
+    <!-- Button to trigger modal -->
+    <button id="chatDelete" class="delete-button">Delete chat</button>
+
+    <!-- Modal -->
+    <div class="modal" id="deleteChatModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm Deletion</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              <strong>
+                Are you sure you want to delete the entire chat history?<br />
+                This action cannot be undone.
+              </strong>
+            </p>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button id="confirmDeleteButton" class="btn btn-danger">Yes</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body messages-box">
+      <ul class="list-unstyled messages-list">
+        <li class="message received">
+          <div class="message-text">
+            <div class="message-sender">
+              <b>AI Chatbot</b>
+            </div>
+            <div class="message-content">
+              Hi {{user.first_name}} {{user.last_name}}, I am your AI Chatbot,
+              you can ask me anything.
+            </div>
+          </div>
+        </li>
+
+        {% for chat in chats %} {% if chat.user == request.user %}
+
+        <li class="message sent">
+          <div class="message-text">
+            <div class="message-sender">
+              <b>You</b>
+            </div>
+            <div class="message-content">{{chat.message}}</div>
+          </div>
+        </li>
+
+        <li class="message received">
+          <div class="message-text">
+            <div class="message-sender">
+              <b>AI Chatbot</b>
+            </div>
+            <div class="message-content">{{chat.response}}</div>
+          </div>
+        </li>
+
+        {% endif %} {% endfor %}
+      </ul>
+      <a href="#top" id="scrollToTop" class="top-arrow"
+        ><i class="fa-solid fa-arrow-up"></i
+      ></a>
+    </div>
+
+    <br /><br />
+    <br /><br />
+    <br /><br />
+  </div>
+  <form class="message-form" id="chatForm">
+    {%csrf_token%}
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control message-input"
+        placeholder="Type your message..."
+      />
+      <div class="input-group-append">
+        <button type="submit" class="btn btn-primary btn-send">Send</button>
+      </div>
+    </div>
+  </form>
+</div>
+{%endif%}
+
+<script>
+  const messagesList = document.querySelector(".messages-list");
+  const messageForm = document.querySelector(".message-form");
+  const messageInput = document.querySelector(".message-input");
+
+  messageForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const message = messageInput.value.trim();
+    if (message.length === 0) {
+      return;
+    }
+
+    const messageItem = document.createElement("li");
+    messageItem.classList.add("message", "sent");
+    messageItem.innerHTML = `
+        <div class="message-text">
+            <div class="message-sender">
+                <b>You</b>
+            </div>
+            <div class="message-content">
+                ${message}
+            </div>
+        </div>`;
+    messagesList.appendChild(messageItem);
+
+    messageInput.value = "";
+
+    fetch("", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        csrfmiddlewaretoken: document.querySelector(
+          "[name=csrfmiddlewaretoken]"
+        ).value,
+        message: message,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const response = data.response;
+        const messageItem = document.createElement("li");
+        messageItem.classList.add("message", "received");
+        messageItem.innerHTML = `
+        <div class="message-text">
+            <div class="message-sender">
+              <b>AI Chatbot</b>
+            </div>
+            <div class="message-content">
+                ${response}
+            </div>
+        </div>
+          `;
+        messagesList.appendChild(messageItem);
+      });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $("#chatDelete").click(function () {
+      $("#deleteChatModal").modal("show");
+    });
+    var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+
+    $("#confirmDeleteButton").click(function () {
+      $.ajax({
+        type: "POST",
+        url: '{% url "delete-chat" %}',
+        headers: { "X-CSRFToken": csrfToken },
+        data: {},
+        success: function (data) {
+          alert(data.message);
+        },
+        error: function (error) {
+          alert("Error occurred. Probably there is nothing to delete.");
+        },
+      });
+      $("#deleteChatModal").modal("hide");
+    });
+  });
+</script>
+
+<script>
+  var scrollToTopButton = document.getElementById("scrollToTop");
+  var topOfPage = document.getElementById("top");
+  var chatForm = document.getElementById("chatForm");
+
+  function hideArrow() {
+    scrollToTopButton.style.display = "none";
+  }
+
+  function showArrow() {
+    scrollToTopButton.style.display = "block";
+    clearTimeout(idleTimeout);
+    idleTimeout = setTimeout(hideArrow, 3000);
+  }
+
+  window.addEventListener("scroll", function () {
+    if (window.pageYOffset > topOfPage.offsetHeight) {
+      showArrow();
+    } else {
+      hideArrow();
+    }
+  });
+
+  var idleTimeout = setTimeout(hideArrow, 10000);
+</script>
+
+<script>
+  $(document).ready(function () {
+    $(".faq-item").click(function () {
+      var answer = $(this).find(".faq-answer");
+      if (answer.is(":visible")) {
+        answer.slideUp();
+      } else {
+        $(".faq-answer").slideUp(); // Close other answers
+        answer.slideDown();
+      }
+    });
+  });
+</script>
+
+{% endblock %}
