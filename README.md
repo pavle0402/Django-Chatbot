@@ -120,12 +120,12 @@ Application should now be running on: http://localhost:8000.
 
 Chatbot:
 
-<img src="chatbot_screenshots/chat2.png" width=450 height=350>
+<img src="chatbot screenshots/chat2.png" width=450 height=350>
 
 Authentication:
 
-<img src="chatbot_screenshots/login.png" width=450 height=350>
-<img src="chatbot_screenshots/register.png" width=450 height=350>
+<img src="chatbot screenshots/login.png" width=450 height=350>
+<img src="chatbot screenshots/register.png" width=450 height=350>
 
 
  As there are many screenshots for this project, i won't attach them here. You can check all the other pictures in "chatbot_screenshots/" folder inside this repository.
