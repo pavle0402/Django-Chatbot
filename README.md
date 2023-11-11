@@ -109,15 +109,10 @@ Application should now be running on: http://localhost:8000.
 <h3>Key Features:</h3> 
 
 - **User Authentication:** Users can register, log in, and log out securely.
-- **Homepage:** Explore frequently asked questions (FAQs), top-rated courses, and an app overview.
-- **Instructor Profiles:** Discover instructors, their skills, and the courses they teach.
-- **Course Listings:** View a list of available courses.
-- **Course Details:** Access detailed information about each course, including descriptions, prices, and user ratings.
-- **Enrollment:** Users can enroll in courses to access the course content.
-- **User Profiles:** Personalized user profiles display profile pictures, social media links, and the courses they have enrolled to.
-- **Feedback Section:** Share feedback and ratings for each course.
- 
-
+- **Chatbot:** Ask whatever u want and get a response. Simple as that.
+- **Homepage:** Explore frequently asked questions (FAQs), option for logging in and registering.
+- **Saving chat history:** All of the prompts and answers are automatically saved by the app.
+- **Deleting chat history:** There is option to delete whole chat history for each user.
  
  ---
 
